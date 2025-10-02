@@ -1,0 +1,23 @@
+services:
+  bot:
+    build: .
+    container_name: open-budget-bot
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - redis
+    command: npm start
+    volumes:
+      - ./logs:/app/logs
+
+  redis:
+    image: redis:7
+    container_name: open-budget-bot-redis
+    restart: unless-stopped
+    volumes:
+      - redis-data:/data
+    command: redis-server --save 60 1 --loglevel warning --appendonly yes
+
+volumes:
+  redis-data:
