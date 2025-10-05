@@ -1,0 +1,47 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  chat_id        BigInt   @unique
+  username       String?
+  first_name     String
+  last_name      String?
+  is_chat_member Boolean  @default(false)
+  require_report Boolean  @default(true)
+  role           UserRole
+  joined_at      DateTime @default(now())
+  missed_count   Int      @default(0)
+  reports        Report[]
+}
+
+model Topic {
+  id              Int      @id @default(autoincrement())
+  title           String
+  created_at      DateTime @default(now())
+  validity_period Int      @default(1)
+  reports         Report[]
+}
+
+model Report {
+  id         Int      @id @default(autoincrement())
+  content    String
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
+  topic      Topic    @relation(fields: [topic_id], references: [id])
+  topic_id   Int
+
+  @@unique([user_id, topic_id])
+}

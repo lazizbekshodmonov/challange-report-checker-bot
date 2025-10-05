@@ -1,15 +1,5 @@
-import bot from './bot.js';
-import { projectStateCheckCronJob } from './cron/projectStateCheckCronJob.js';
+import bot from './bot/index.js';
+import { startCheckReportSchedule } from './schedules/check-report.schedule.js';
 
-bot
-  .start()
-  .then((response) => {
-    console.log('Bot start:', response);
-  })
-  .catch((error) => {
-    console.log('Error:', error);
-  });
-
-setTimeout(() => {
-  projectStateCheckCronJob();
-}, 3000);
+bot.start();
+startCheckReportSchedule();

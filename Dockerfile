@@ -12,4 +12,4 @@ RUN npm run build
 
 COPY .env .env
 
-CMD ["npm", "start"]
+CMD ["npm", "startCommand"]

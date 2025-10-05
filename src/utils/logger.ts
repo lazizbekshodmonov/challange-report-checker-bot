@@ -9,7 +9,7 @@ export function getLogFileStream(dateStr?: string): {
   filename: string;
 } {
   const date = dateStr ? dayjs(dateStr, 'YYYY-MM-DD') : dayjs();
-  const logDir = path.resolve('logs');
+  const logDir = path.resolve('logsCommand');
   const logName = `bot-${date.format('YYYY-MM-DD')}.log`;
   const logPath = path.join(logDir, logName);
   const gzPath = logPath + '.gz';

@@ -1,19 +1,31 @@
 services:
   bot:
     build: .
-    container_name: open-budget-bot
+    container_name: challange_report_bot
     restart: unless-stopped
     env_file:
       - .env
     depends_on:
       - redis
-    command: npm start
     volumes:
-      - ./logs:/app/logs
+      - ./logsCommand:/app/logsCommand
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: telegram_bot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   redis:
     image: redis:7
-    container_name: open-budget-bot-redis
+    container_name: open-budget-index-redis
     restart: unless-stopped
     volumes:
       - redis-data:/data
@@ -21,3 +33,4 @@ services:
 
 volumes:
   redis-data:
+  postgres_data:
